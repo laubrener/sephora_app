@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sephora_app/widgets/background.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('MainPage'),
+        child: Background(),
       ),
     );
   }
