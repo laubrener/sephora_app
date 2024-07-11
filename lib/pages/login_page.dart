@@ -11,30 +11,29 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: Stack(
           children: [
-            const Background(),
-            Center(
+            // const Background(),
+            SingleChildScrollView(
               child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .5,
-                color: Colors.white,
-              ),
-            ),
-            const SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Logo(),
-                  _Form(),
-                  Labels(),
-                  Text(
-                    'Términos y condiciones de uso',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
-                ],
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Logo(),
+                    _Form(),
+                    Labels(
+                      route: 'register',
+                      text: '¿No tenés cuenta?',
+                      link: 'Crea una cuenta ahora',
+                    ),
+                    Text(
+                      'Términos y condiciones de uso',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -58,8 +57,8 @@ class __FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40),
-      padding: const EdgeInsets.symmetric(horizontal: 50),
+      margin: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
           CustomInput(
@@ -75,10 +74,11 @@ class __FormState extends State<_Form> {
             textController: passwordCtrl,
           ),
           SendBtn(
-            text: 'Enviar',
+            text: 'Entrar',
             onPressed: () {
               print(
                   'email: ${emailCtrl.text}, contraseña: ${passwordCtrl.text}');
+              Navigator.pushReplacementNamed(context, 'mainPage');
             },
           )
         ],

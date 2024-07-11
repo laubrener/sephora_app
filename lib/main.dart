@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sephora app',
-      initialRoute: 'login',
+      initialRoute: 'mainPage',
       routes: appRoutes,
     );
   }
