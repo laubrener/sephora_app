@@ -24,13 +24,14 @@ class CustomInput extends StatelessWidget {
           right: 20,
         ),
         margin: const EdgeInsets.only(bottom: 20),
+        height: 50,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
                 blurRadius: 5,
               )
             ]),

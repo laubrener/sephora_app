@@ -5,26 +5,12 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        child: ListView.builder(
-            itemCount: 100,
-            itemBuilder: (BuildContext context, i) {
-              return Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    color: Colors.black,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    color: Colors.white,
-                  ),
-                ],
-              );
-            }),
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      child: const Image(
+        fit: BoxFit.cover,
+        image: AssetImage('assets/images/fondo.png'),
       ),
     );
   }
