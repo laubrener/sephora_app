@@ -1,56 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:sephora_app/pages/home_page.dart';
+import 'package:sephora_app/pages/new_arrivals_page.dart';
+import 'package:sephora_app/pages/shop_page.dart';
 import 'package:sephora_app/widgets/background.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage>
+    with SingleTickerProviderStateMixin {
+  late TabController tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+    tabController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: SearchBar(
-            hintText: 'Search Sephora',
-            trailing: const [Icon(Icons.search_outlined)],
-            constraints: const BoxConstraints(maxHeight: 40),
-            backgroundColor: MaterialStatePropertyAll(Colors.grey[600]),
-            textStyle:
-                const MaterialStatePropertyAll(TextStyle(color: Colors.white)),
-          ),
-          backgroundColor: Colors.black,
-          actions: const [Icon(Icons.shopping_bag_outlined)],
+      appBar: AppBar(
+        title: SearchBar(
+          hintText: 'Search Sephora',
+          trailing: const [Icon(Icons.search_outlined)],
+          constraints: const BoxConstraints(maxHeight: 40),
+          backgroundColor: MaterialStatePropertyAll(Colors.grey[600]),
+          textStyle:
+              const MaterialStatePropertyAll(TextStyle(color: Colors.white)),
         ),
-        drawer: const Menu(),
-        body: Column(
-          children: [
-            Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.black87,
-              ),
+        backgroundColor: Colors.black,
+        actions: const [Icon(Icons.shopping_bag_outlined)],
+        bottom: TabBar(
+          indicatorColor: Colors.white,
+          controller: tabController,
+          tabs: const [
+            Tab(
+              text: 'PRINCIPAL',
             ),
-            Expanded(
-              child: PageView(
-                children: [
-                  Container(
-                    color: Colors.amber,
-                    height: double.infinity,
-                    child: const Text('pagina 1'),
-                  ),
-                  Container(
-                    color: Colors.greenAccent,
-                    height: double.infinity,
-                    child: const Text('pagina 2'),
-                  ),
-                  Container(
-                    color: Colors.purpleAccent,
-                    height: double.infinity,
-                    child: const Text('pagina 3'),
-                  )
-                ],
-              ),
+            Tab(
+              text: 'PRODUCTOS',
+            ),
+            Tab(
+              text: 'LO ÚLTIMO',
             ),
           ],
-        ));
+        ),
+      ),
+      drawer: const Menu(),
+      drawerScrimColor: Colors.white.withOpacity(0.5),
+      body: TabBarView(
+        controller: tabController,
+        children: const [
+          HomePage(),
+          ShopPage(),
+          NewArrivalsPage(),
+        ],
+      ),
+    );
   }
 }
 
@@ -63,7 +83,7 @@ class Menu extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
         child: Drawer(
-            backgroundColor: Colors.black45,
+            backgroundColor: Colors.black,
             child: Column(
               children: [
                 CajaSaludo(),
@@ -93,12 +113,12 @@ class CajaSaludo extends StatelessWidget {
         Row(
           children: [
             Btn(
-              text: 'Iniciar Sesión',
+              text: 'INICIAR SESIÓN',
               route: 'login',
             ),
             SizedBox(width: 10),
             Btn(
-              text: 'Crear Cuenta',
+              text: 'CREAR CUENTA',
               route: 'register',
             ),
           ],
@@ -120,6 +140,7 @@ class Btn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       color: Colors.white,
       child: Text(
         text,
