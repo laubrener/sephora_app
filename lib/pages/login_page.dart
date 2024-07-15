@@ -78,7 +78,7 @@ class __FormState extends State<_Form> {
             onPressed: () {
               print(
                   'email: ${emailCtrl.text}, contraseña: ${passwordCtrl.text}');
-              Navigator.pushReplacementNamed(context, 'mainPage');
+              Navigator.pushReplacementNamed(context, 'main');
             },
           )
         ],

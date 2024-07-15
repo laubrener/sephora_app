@@ -3,6 +3,7 @@ import 'package:sephora_app/pages/home_page.dart';
 import 'package:sephora_app/pages/new_arrivals_page.dart';
 import 'package:sephora_app/pages/shop_page.dart';
 import 'package:sephora_app/widgets/background.dart';
+import 'package:sephora_app/widgets/drawers_list.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -87,6 +88,7 @@ class Menu extends StatelessWidget {
             child: Column(
               children: [
                 CajaSaludo(),
+                Expanded(child: DrawersList()),
               ],
             )));
   }
