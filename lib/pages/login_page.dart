@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sephora_app/widgets/background.dart';
 import 'package:sephora_app/widgets/custom_input.dart';
 import 'package:sephora_app/widgets/labels.dart';
 import 'package:sephora_app/widgets/logo.dart';
