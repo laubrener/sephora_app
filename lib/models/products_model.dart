@@ -400,7 +400,7 @@ class Product {
         "altImage": altImage,
         "onSaleData": onSaleData,
         "productId": productId,
-        "rating": rating,
+        "rating": double.parse(rating ?? '0'),
         "reviews": reviews,
         "pickupEligible": pickupEligible,
         "sameDayEligible": sameDayEligible,

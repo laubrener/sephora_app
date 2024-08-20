@@ -1,23 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sephora_app/providers/products_provider.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../models/products_model.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String catId;
+  const HomePage({Key? key, required this.catId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ProductsList(),
+    return Scaffold(
+      body: ProductsList(catId: catId),
     );
   }
 }
 
-class ProductsList extends StatelessWidget {
+class ProductsList extends StatefulWidget {
+  final String catId;
   const ProductsList({
     super.key,
+    required this.catId,
   });
 
   @override
+  State<ProductsList> createState() => _ProductsListState();
+}
+
+class _ProductsListState extends State<ProductsList>
+    with TickerProviderStateMixin {
+  ProductsProvider productsProvider = ProductsProvider();
+
+  @override
+  void initState() {
+    productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+    _loadCategories();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  void _loadCategories() async {
+    print(widget.catId);
+    await productsProvider.getProducts(widget.catId);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<Product> products = productsProvider.productsList;
     return GridView.builder(
       padding: EdgeInsets.all(20),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -26,7 +62,7 @@ class ProductsList extends StatelessWidget {
           crossAxisSpacing: 15,
           mainAxisSpacing: 15,
           mainAxisExtent: 250),
-      itemCount: 15,
+      itemCount: products.length,
       itemBuilder: (context, index) {
         return Container(
           padding: const EdgeInsets.all(10),
@@ -46,24 +82,35 @@ class ProductsList extends StatelessWidget {
             children: [
               Container(
                 height: 100,
-                // width: 50,
-                child: const Image(
+                width: double.infinity,
+                child: FadeInImage(
+                  placeholder: const AssetImage('assets/images/no-image.jpg'),
+                  placeholderFit: BoxFit.cover,
+                  image: NetworkImage(products[index].heroImage ?? ''),
                   fit: BoxFit.contain,
-                  image: AssetImage('assets/images/logo.png'),
                 ),
               ),
+              const SizedBox(height: 15),
               Text(
-                'DRYBAR',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                (products[index].brandName ?? 'Drybar').toUpperCase(),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
-              Text('Blonde Ale Brightening Shampoo'),
+              const SizedBox(height: 10),
               Text(
-                '\$27.00',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                products[index].displayName ?? 'Blonde Ale Brightening Shampoo',
+                overflow: TextOverflow.clip,
+                maxLines: 2,
               ),
-              SizedBox(height: 15),
-              const Reviews()
+              Text(
+                products[index].currentSku?.listPrice ?? '\$27.00',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              RatingWidget(
+                rating: double.parse(products[index].rating ?? '0'),
+              )
             ],
           ),
         );
@@ -72,37 +119,36 @@ class ProductsList extends StatelessWidget {
   }
 }
 
-class Reviews extends StatelessWidget {
-  const Reviews({
+class RatingWidget extends StatelessWidget {
+  const RatingWidget({
     super.key,
+    required this.rating,
   });
+
+  final double rating;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.star,
-          size: 20,
-        ),
-        Icon(
-          Icons.star,
-          size: 20,
-        ),
-        Icon(
-          Icons.star,
-          size: 20,
-        ),
-        Icon(
-          Icons.star,
-          size: 20,
-        ),
-        Icon(
-          Icons.star,
-          size: 20,
-          color: Colors.grey[300],
-        ),
-      ],
+    return Container(
+      alignment: Alignment.bottomLeft,
+      width: double.infinity,
+      height: 20,
+      child: RatingBar.builder(
+        direction: Axis.horizontal,
+        onRatingUpdate: (value) => print(value),
+        ignoreGestures: true,
+        initialRating: rating,
+        itemCount: 5,
+        itemSize: 22,
+        allowHalfRating: true,
+        unratedColor: Colors.grey[300],
+        itemBuilder: (BuildContext context, int i) {
+          return const Icon(
+            Icons.star,
+            color: Colors.black,
+          );
+        },
+      ),
     );
   }
 }

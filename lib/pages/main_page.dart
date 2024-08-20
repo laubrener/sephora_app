@@ -65,7 +65,7 @@ class _MainPageState extends State<MainPage>
       body: TabBarView(
         controller: tabController,
         children: const [
-          HomePage(),
+          HomePage(catId: 'cat1080037'),
           ShopPage(),
           NewArrivalsPage(),
         ],
