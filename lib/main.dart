@@ -18,11 +18,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductsProvider()),
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Sephora app',
-        initialRoute: 'main',
-        routes: appRoutes,
-      ),
+          debugShowCheckedModeBanner: false,
+          title: 'Sephora app',
+          initialRoute: 'main',
+          routes: appRoutes,
+          theme: ThemeData.light().copyWith(
+            appBarTheme: const AppBarTheme(color: Colors.black),
+          )),
     );
   }
 }

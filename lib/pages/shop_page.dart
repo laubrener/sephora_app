@@ -40,12 +40,11 @@ class _CategoriesListState extends State<CategoriesList>
 
   void _loadCategories() async {
     await categoriesProvider.getCategories();
-    setState(() {});
+    // setState(() {});
   }
 
   @override
   void dispose() {
-    // categoriesProvider.dispose();
     super.dispose();
   }
 

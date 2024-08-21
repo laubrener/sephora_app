@@ -26,8 +26,8 @@ class _MainPageState extends State<MainPage>
 
   @override
   void dispose() {
-    super.dispose();
     tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,7 +42,6 @@ class _MainPageState extends State<MainPage>
           textStyle:
               const MaterialStatePropertyAll(TextStyle(color: Colors.white)),
         ),
-        backgroundColor: Colors.black,
         actions: const [Icon(Icons.shopping_bag_outlined)],
         bottom: TabBar(
           indicatorColor: Colors.white,
@@ -65,7 +64,10 @@ class _MainPageState extends State<MainPage>
       body: TabBarView(
         controller: tabController,
         children: const [
-          HomePage(catId: 'cat1080037'),
+          HomePage(
+            catId: 'cat1080037',
+            name: 'Hair Dryers',
+          ),
           ShopPage(),
           NewArrivalsPage(),
         ],

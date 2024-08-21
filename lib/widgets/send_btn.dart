@@ -12,7 +12,8 @@ class SendBtn extends StatelessWidget {
         onPressed: () => onPressed(),
         elevation: 2,
         highlightElevation: 5,
-        color: Color(int.parse('0xffD93930')),
+        color: Colors.black,
+        // color: Color(int.parse('0xffD93930')),
         shape: const StadiumBorder(),
         child: Container(
           width: double.infinity,

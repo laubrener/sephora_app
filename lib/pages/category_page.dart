@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sephora_app/models/category_model.dart';
+import 'package:sephora_app/pages/home_page.dart';
 import 'package:sephora_app/pages/loading_page.dart';
 import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/categories_provider.dart';
@@ -31,13 +32,11 @@ class _CategoryPageState extends State<CategoryPage>
   void _loadCategories() async {
     print(widget.catId);
     await categoriesProvider.getSubcategories(widget.catId ?? '');
-    print(categoriesProvider.subcategoriesList);
     setState(() {});
   }
 
   @override
   void dispose() {
-    categoriesProvider.dispose();
     super.dispose();
   }
 
@@ -47,17 +46,17 @@ class _CategoryPageState extends State<CategoryPage>
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.black,
-            title: Text(widget.name!),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.chevron_left_outlined, size: 35),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ]),
+          title: Text(widget.name!),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left_outlined, size: 35),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
         drawer: const Menu(),
         drawerScrimColor: Colors.white.withOpacity(0.5),
         body: categories!.isEmpty
@@ -71,10 +70,13 @@ class _CategoryPageState extends State<CategoryPage>
                 itemBuilder: (context, i) => ListTile(
                       title: Text(categories[i].displayName ?? ""),
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (BuildContext context) => pageRoutes[i].page));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => HomePage(
+                                      catId: categories[i].categoryId!,
+                                      name: categories[i].displayName!,
+                                    )));
                       },
                     )));
   }

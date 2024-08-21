@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sephora_app/models/product_model.dart';
 
 import 'package:sephora_app/models/products_model.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +11,7 @@ import 'categories_provider.dart';
 
 class ProductsProvider extends ChangeNotifier {
   List<Product> productsList = [];
+  ProductModel product = ProductModel();
 
   Future<List<Product>?> getProducts(String catId) async {
     Uri url = Uri.parse(
@@ -24,5 +26,20 @@ class ProductsProvider extends ChangeNotifier {
     productsList = products.products ?? [];
 
     return productsList;
+  }
+
+  Future<ProductModel> getProductDetail(String prodId, String skuId) async {
+    Uri url = Uri.parse(
+        '$path/us/products/v2/detail?productId=$prodId&preferedSku=$skuId');
+    final resp = await http.get(url, headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'x-rapidapi-key': apiKey
+    });
+
+    ProductModel respProduct =
+        ProductModel.fromRawJson(utf8.decode(resp.bodyBytes));
+    product = respProduct;
+
+    return product;
   }
 }
