@@ -43,11 +43,12 @@ class ProductsProvider extends ChangeNotifier {
     ProductsModel products =
         ProductsModel.fromRawJson(utf8.decode(resp.bodyBytes));
     _productsList = products.products ?? [];
-
+    _isLoading = false;
     return _productsList;
   }
 
   Future<ProductModel> getProductDetail(String prodId, String skuId) async {
+    _isLoading = true;
     Uri url = Uri.parse(
         '$path/us/products/v2/detail?productId=$prodId&preferedSku=$skuId');
     final resp = await http.get(url, headers: {
@@ -58,7 +59,7 @@ class ProductsProvider extends ChangeNotifier {
     ProductModel respProduct =
         ProductModel.fromRawJson(utf8.decode(resp.bodyBytes));
     product = respProduct;
-
+    _isLoading = false;
     return product;
   }
 }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sephora_app/models/product_model.dart';
 import 'package:sephora_app/models/products_model.dart';
 import 'package:sephora_app/pages/home_page.dart';
+import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/products_provider.dart';
 import 'package:sephora_app/widgets/send_btn.dart';
 import 'package:sephora_app/widgets/suggestion_list.dart';
@@ -38,7 +39,7 @@ class _DetailsPageState extends State<DetailsPage>
     await productsProvider.getProductDetail(
         widget.product.productId!, widget.product.currentSku!.skuId!);
     suggestionList = await productsProvider.getProducts('cat1080037');
-    productsProvider.isLoading = false;
+
     setState(() {});
   }
 
@@ -46,10 +47,7 @@ class _DetailsPageState extends State<DetailsPage>
   Widget build(BuildContext context) {
     final product = productsProvider.product.productDetails;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(product?.brand?.displayName ?? ''),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(title: product?.brand?.displayName ?? ''),
       body: productsProvider.isLoading == true
           ? const Center(
               child: CircularProgressIndicator(
@@ -57,7 +55,9 @@ class _DetailsPageState extends State<DetailsPage>
               ),
             )
           : SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height * .7,
@@ -71,32 +71,43 @@ class _DetailsPageState extends State<DetailsPage>
                             product: productsProvider.product,
                             controller: pageController),
                         const SizedBox(height: 15),
+                        RatingWidget(
+                          rating: product?.rating ?? 0,
+                        ),
                         Text(
                           (product?.brand?.displayName ?? '').toUpperCase(),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         const SizedBox(height: 10),
                         Text(
                           product?.displayName ?? '',
                           overflow: TextOverflow.clip,
                           maxLines: 2,
+                          style: TextStyle(fontSize: 16),
                         ),
                         Text(
                           productsProvider.product.currentSku?.listPrice ??
                               '\$00.00',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                         const SizedBox(height: 15),
-                        RatingWidget(
-                          rating: product?.rating ?? 0,
-                        ),
                         SendBtn(
                           onPressed: () {},
-                          text: 'Agregar al carrito',
+                          text: 'ADD TO BASKET',
                         ),
                       ],
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'SIMILAR PRODUCTS',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   Container(

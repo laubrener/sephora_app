@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sephora_app/pages/details_page.dart';
+import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/products_provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -15,10 +16,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-        centerTitle: true,
-      ),
+      appBar: CustomAppBar(title: name.toUpperCase()),
       body: ProductsList(catId: catId),
     );
   }
@@ -68,7 +66,8 @@ class _ProductsListState extends State<ProductsList>
             child: CircularProgressIndicator(color: Colors.black),
           )
         : GridView.builder(
-            padding: EdgeInsets.all(20),
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(20),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
                 // childAspectRatio: 1,
@@ -117,6 +116,7 @@ class CardWidget extends StatelessWidget {
         color: Colors.white,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -149,6 +149,7 @@ class CardWidget extends StatelessWidget {
           const SizedBox(height: 15),
           RatingWidget(
             rating: double.parse(product.rating ?? '0'),
+            size: 16,
           )
         ],
       ),
@@ -160,9 +161,11 @@ class RatingWidget extends StatelessWidget {
   const RatingWidget({
     super.key,
     required this.rating,
+    this.size = 22,
   });
 
   final double rating;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +179,7 @@ class RatingWidget extends StatelessWidget {
         ignoreGestures: true,
         initialRating: rating,
         itemCount: 5,
-        itemSize: 22,
+        itemSize: size!,
         allowHalfRating: true,
         unratedColor: Colors.grey[300],
         itemBuilder: (BuildContext context, int i) {

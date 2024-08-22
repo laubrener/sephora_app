@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sephora_app/models/categories_model.dart';
 import 'package:sephora_app/pages/category_page.dart';
 import 'package:sephora_app/pages/loading_page.dart';
+import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/categories_provider.dart';
 
 class ShopPage extends StatelessWidget {
@@ -10,7 +11,8 @@ class ShopPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: CustomAppBar(title: 'SHOP'),
       body: CategoriesList(),
     );
   }
@@ -44,6 +46,7 @@ class _CategoriesListState extends State<CategoriesList>
 
   @override
   void dispose() {
+    // categoriesProvider.dispose();
     super.dispose();
   }
 

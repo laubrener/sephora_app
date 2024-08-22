@@ -44,21 +44,10 @@ class _CategoryPageState extends State<CategoryPage>
     List<ChildCategory>? categories = categoriesProvider.subcategoriesList;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.name!),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.chevron_left_outlined, size: 35),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
+        appBar: CustomAppBar(title: (widget.name?.toUpperCase()) ?? ''),
         drawer: const Menu(),
         drawerScrimColor: Colors.white.withOpacity(0.5),
-        body: categories!.isEmpty
+        body: categories.isEmpty
             ? const LoadingPage()
             : ListView.separated(
                 physics: const BouncingScrollPhysics(),

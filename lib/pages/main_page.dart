@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sephora_app/pages/home_page.dart';
-import 'package:sephora_app/pages/new_arrivals_page.dart';
 import 'package:sephora_app/pages/shop_page.dart';
 import 'package:sephora_app/widgets/drawers_list.dart';
 
@@ -33,47 +32,71 @@ class _MainPageState extends State<MainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: SearchBar(
-          hintText: 'Search Sephora',
-          trailing: const [Icon(Icons.search_outlined)],
-          constraints: const BoxConstraints(maxHeight: 40),
-          backgroundColor: MaterialStatePropertyAll(Colors.grey[600]),
-          textStyle:
-              const MaterialStatePropertyAll(TextStyle(color: Colors.white)),
-        ),
-        actions: const [Icon(Icons.shopping_bag_outlined)],
-        bottom: TabBar(
-          indicatorColor: Colors.white,
-          controller: tabController,
-          tabs: const [
-            Tab(
-              text: 'PRINCIPAL',
-            ),
-            Tab(
-              text: 'PRODUCTOS',
-            ),
-            Tab(
-              text: 'LO ÚLTIMO',
-            ),
-          ],
-        ),
+      appBar: const CustomAppBar(
+        title: 'SEPHORA',
       ),
       drawer: const Menu(),
       drawerScrimColor: Colors.white.withOpacity(0.5),
-      body: TabBarView(
-        controller: tabController,
-        children: const [
-          HomePage(
-            catId: 'cat1080037',
-            name: 'Hair Dryers',
-          ),
-          ShopPage(),
-          NewArrivalsPage(),
-        ],
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MaterialButton(
+              color: Colors.greenAccent,
+              child: const Text(
+                'Categories',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const ShopPage())),
+            ),
+            MaterialButton(
+              color: Colors.lightBlue,
+              child: const Text(
+                'Shop',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => const HomePage(
+                            name: 'HAIR DRYERS',
+                            catId: 'cat1080037',
+                          ))),
+            )
+          ],
+        ),
       ),
     );
   }
+}
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  const CustomAppBar({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(title),
+      centerTitle: true,
+      actions: const [
+        Icon(Icons.search_outlined),
+        SizedBox(width: 10),
+        Icon(Icons.shopping_bag_outlined),
+        SizedBox(width: 10),
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(60);
 }
 
 class Menu extends StatelessWidget {

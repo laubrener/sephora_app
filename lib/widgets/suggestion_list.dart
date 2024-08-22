@@ -14,6 +14,7 @@ class SuggestionList extends StatelessWidget {
       width: double.infinity,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context, index) => Container(
             padding: const EdgeInsets.only(left: 15, bottom: 15, top: 15),
