@@ -5,6 +5,7 @@ import 'package:sephora_app/models/products_model.dart';
 import 'package:sephora_app/pages/home_page.dart';
 import 'package:sephora_app/providers/products_provider.dart';
 import 'package:sephora_app/widgets/send_btn.dart';
+import 'package:sephora_app/widgets/suggestion_list.dart';
 
 class DetailsPage extends StatefulWidget {
   final Product product;
@@ -18,6 +19,7 @@ class _DetailsPageState extends State<DetailsPage>
     with TickerProviderStateMixin {
   ProductsProvider productsProvider = ProductsProvider();
   PageController pageController = PageController();
+  List<Product>? suggestionList = [];
 
   @override
   void initState() {
@@ -35,6 +37,8 @@ class _DetailsPageState extends State<DetailsPage>
   Future<void> _loadProduct() async {
     await productsProvider.getProductDetail(
         widget.product.productId!, widget.product.currentSku!.skuId!);
+    suggestionList = await productsProvider.getProducts('cat1080037');
+    productsProvider.isLoading = false;
     setState(() {});
   }
 
@@ -46,48 +50,62 @@ class _DetailsPageState extends State<DetailsPage>
         title: Text(product?.brand?.displayName ?? ''),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * .7,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProductImages(
-                    product: productsProvider.product,
-                    controller: pageController),
-                const SizedBox(height: 15),
-                Text(
-                  (product?.brand?.displayName ?? '').toUpperCase(),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  product?.displayName ?? '',
-                  overflow: TextOverflow.clip,
-                  maxLines: 2,
-                ),
-                Text(
-                  productsProvider.product.currentSku?.listPrice ?? '\$00.00',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 15),
-                RatingWidget(
-                  rating: product?.rating ?? 0,
-                ),
-                SendBtn(
-                  onPressed: () {},
-                  text: 'Agregar al carrito',
-                ),
-              ],
+      body: productsProvider.isLoading == true
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * .7,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ProductImages(
+                            product: productsProvider.product,
+                            controller: pageController),
+                        const SizedBox(height: 15),
+                        Text(
+                          (product?.brand?.displayName ?? '').toUpperCase(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          product?.displayName ?? '',
+                          overflow: TextOverflow.clip,
+                          maxLines: 2,
+                        ),
+                        Text(
+                          productsProvider.product.currentSku?.listPrice ??
+                              '\$00.00',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 15),
+                        RatingWidget(
+                          rating: product?.rating ?? 0,
+                        ),
+                        SendBtn(
+                          onPressed: () {},
+                          text: 'Agregar al carrito',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                      height: 290,
+                      width: double.infinity,
+                      child: SuggestionList(list: suggestionList ?? [])),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
     );
   }
 }

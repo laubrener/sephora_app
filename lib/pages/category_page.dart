@@ -24,8 +24,7 @@ class _CategoryPageState extends State<CategoryPage>
   void initState() {
     super.initState();
 
-    categoriesProvider =
-        Provider.of<CategoriesProvider>(context, listen: false);
+    categoriesProvider = context.read<CategoriesProvider>();
     _loadCategories();
   }
 

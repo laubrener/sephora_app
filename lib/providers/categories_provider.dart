@@ -7,8 +7,20 @@ import 'package:sephora_app/models/category_model.dart';
 const String path = 'https://sephora.p.rapidapi.com';
 
 class CategoriesProvider extends ChangeNotifier {
-  List<RootCategory> categoriesList = [];
-  List<ChildCategory>? subcategoriesList = [];
+  List<RootCategory> _categoriesList = [];
+  List<ChildCategory> _subcategoriesList = [];
+
+  List<RootCategory> get categoriesList => _categoriesList;
+  set categoriesList(List<RootCategory> value) {
+    _categoriesList = value;
+    notifyListeners();
+  }
+
+  List<ChildCategory> get subcategoriesList => _subcategoriesList;
+  set subcategoriesList(List<ChildCategory> value) {
+    _subcategoriesList = value;
+    notifyListeners();
+  }
 
   Future<List<RootCategory>?> getCategories() async {
     Uri url = Uri.parse('$path/categories/v2/list-root');

@@ -33,14 +33,13 @@ class _CategoriesListState extends State<CategoriesList>
   void initState() {
     super.initState();
 
-    categoriesProvider =
-        Provider.of<CategoriesProvider>(context, listen: false);
+    categoriesProvider = context.read<CategoriesProvider>();
     _loadCategories();
   }
 
   void _loadCategories() async {
     await categoriesProvider.getCategories();
-    // setState(() {});
+    setState(() {});
   }
 
   @override

@@ -41,7 +41,7 @@ class _ProductsListState extends State<ProductsList>
 
   @override
   void initState() {
-    productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+    productsProvider = context.read<ProductsProvider>();
     _loadCategories();
     super.initState();
   }
@@ -55,35 +55,41 @@ class _ProductsListState extends State<ProductsList>
   void _loadCategories() async {
     print(widget.catId);
     await productsProvider.getProducts(widget.catId);
+    productsProvider.isLoading = false;
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     List<Product> products = productsProvider.productsList;
-    return GridView.builder(
-      padding: EdgeInsets.all(20),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          // childAspectRatio: 1,
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 15,
-          mainAxisExtent: 250),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => DetailsPage(
-                          product: products[index],
-                        )));
-          },
-          child: CardWidget(product: products[index]),
-        );
-      },
-    );
+
+    return productsProvider.isLoading == true
+        ? const Center(
+            child: CircularProgressIndicator(color: Colors.black),
+          )
+        : GridView.builder(
+            padding: EdgeInsets.all(20),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                // childAspectRatio: 1,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                mainAxisExtent: 250),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => DetailsPage(
+                                product: products[index],
+                              )));
+                },
+                child: CardWidget(product: products[index]),
+              );
+            },
+          );
   }
 }
 

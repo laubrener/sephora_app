@@ -9,10 +9,17 @@ class SuggestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: list.length,
-      itemBuilder: (context, index) => CardWidget(product: list[index]),
+    return Container(
+      height: 100,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: list.length,
+        itemBuilder: (context, index) => Container(
+            padding: const EdgeInsets.only(left: 15, bottom: 15, top: 15),
+            width: 200,
+            child: CardWidget(product: list[index])),
+      ),
     );
   }
 }
