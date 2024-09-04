@@ -47,7 +47,7 @@ class _CategoryPageState extends State<CategoryPage>
         appBar: CustomAppBar(title: (widget.name?.toUpperCase()) ?? ''),
         drawer: const Menu(),
         drawerScrimColor: Colors.white.withOpacity(0.5),
-        body: categories.isEmpty
+        body: categoriesProvider.isLoading
             ? const LoadingPage()
             : ListView.separated(
                 physics: const BouncingScrollPhysics(),

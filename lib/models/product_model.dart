@@ -4,6 +4,7 @@ class ProductModel {
   final List<dynamic>? combinedMiddleProductBanner;
   final List<dynamic>? combinedProductBanner;
   final Content? content;
+  final List<AncillarySkus>? ancillarySkus;
   final CurrentSku? currentSku;
   final bool? enableNoindexMetaTag;
   final String? fullSiteProductUrl;
@@ -27,6 +28,7 @@ class ProductModel {
     this.combinedMiddleProductBanner,
     this.combinedProductBanner,
     this.content,
+    this.ancillarySkus,
     this.currentSku,
     this.enableNoindexMetaTag,
     this.fullSiteProductUrl,
@@ -62,6 +64,10 @@ class ProductModel {
             : List<dynamic>.from(json["combinedProductBanner"]!.map((x) => x)),
         content:
             json["content"] == null ? null : Content.fromJson(json["content"]),
+        ancillarySkus: json["ancillarySkus"] == null
+            ? []
+            : List<AncillarySkus>.from(
+                json["ancillarySkus"]!.map((x) => AncillarySkus.fromJson(x))),
         currentSku: json["currentSku"] == null
             ? null
             : CurrentSku.fromJson(json["currentSku"]),
@@ -105,6 +111,9 @@ class ProductModel {
             ? []
             : List<dynamic>.from(combinedProductBanner!.map((x) => x)),
         "content": content?.toJson(),
+        "ancillarySkus": ancillarySkus == null
+            ? []
+            : List<dynamic>.from(ancillarySkus!.map((x) => x.toJson())),
         "currentSku": currentSku?.toJson(),
         "enableNoindexMetaTag": enableNoindexMetaTag,
         "fullSiteProductUrl": fullSiteProductUrl,
@@ -176,6 +185,179 @@ class Content {
       };
 }
 
+class AncillarySkus {
+  final String? targetUrl;
+  final String? skuId;
+  final ActionFlags? actionFlags;
+  final String? biExclusiveLevel;
+  final String? brandName;
+  final String? freeShippingMessage;
+  final String? image;
+  final bool? isAppExclusive;
+  final bool? isBiOnly;
+  final bool? isFirstAccess;
+  final bool? isFree;
+  final bool? isFreeShippingSku;
+  final bool? isGoingFast;
+  final bool? isLimitedEdition;
+  final bool? isLimitedTimeOffer;
+  final bool? isLimitedQuantity;
+  final bool? isNew;
+  final bool? isOnlineOnly;
+  final bool? isOnlyFewLeft;
+  final bool? isOutOfStock;
+  final bool? isExternallySellable;
+  final bool? isRopisEligibleSku;
+  final bool? isPickUpEligibleSku;
+  final bool? isSephoraExclusive;
+  final String? listPrice;
+  final int? maxPurchaseQuantity;
+  final String? productId;
+  final String? productName;
+  final SkuImages? skuImages;
+  final String? variationType;
+  final String? variationTypeDisplayName;
+  final bool? isReturnable;
+  final bool? isSameDayEligibleSku;
+  final String? size;
+  final String? smallImage;
+  final String? variationDesc;
+  final String? variationValue;
+  final String? badgeAltText;
+
+  AncillarySkus({
+    this.targetUrl,
+    this.skuId,
+    this.actionFlags,
+    this.biExclusiveLevel,
+    this.brandName,
+    this.freeShippingMessage,
+    this.image,
+    this.isAppExclusive,
+    this.isBiOnly,
+    this.isFirstAccess,
+    this.isFree,
+    this.isFreeShippingSku,
+    this.isGoingFast,
+    this.isLimitedEdition,
+    this.isLimitedTimeOffer,
+    this.isLimitedQuantity,
+    this.isNew,
+    this.isOnlineOnly,
+    this.isOnlyFewLeft,
+    this.isOutOfStock,
+    this.isExternallySellable,
+    this.isRopisEligibleSku,
+    this.isPickUpEligibleSku,
+    this.isSephoraExclusive,
+    this.listPrice,
+    this.maxPurchaseQuantity,
+    this.productId,
+    this.productName,
+    this.skuImages,
+    this.variationType,
+    this.variationTypeDisplayName,
+    this.isReturnable,
+    this.isSameDayEligibleSku,
+    this.size,
+    this.smallImage,
+    this.variationDesc,
+    this.variationValue,
+    this.badgeAltText,
+  });
+
+  factory AncillarySkus.fromRawJson(String str) =>
+      AncillarySkus.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory AncillarySkus.fromJson(Map<String, dynamic> json) => AncillarySkus(
+        targetUrl: json["targetUrl"],
+        skuId: json["skuId"],
+        actionFlags: json["actionFlags"] == null
+            ? null
+            : ActionFlags.fromJson(json["actionFlags"]),
+        biExclusiveLevel: json["biExclusiveLevel"],
+        brandName: json["brandName"],
+        freeShippingMessage: json["freeShippingMessage"],
+        image: json["image"],
+        isAppExclusive: json["isAppExclusive"],
+        isBiOnly: json["isBiOnly"],
+        isFirstAccess: json["isFirstAccess"],
+        isFree: json["isFree"],
+        isFreeShippingSku: json["isFreeShippingSku"],
+        isGoingFast: json["isGoingFast"],
+        isLimitedEdition: json["isLimitedEdition"],
+        isLimitedTimeOffer: json["isLimitedTimeOffer"],
+        isLimitedQuantity: json["isLimitedQuantity"],
+        isNew: json["isNew"],
+        isOnlineOnly: json["isOnlineOnly"],
+        isOnlyFewLeft: json["isOnlyFewLeft"],
+        isOutOfStock: json["isOutOfStock"],
+        isExternallySellable: json["isExternallySellable"],
+        isRopisEligibleSku: json["isRopisEligibleSku"],
+        isPickUpEligibleSku: json["isPickUpEligibleSku"],
+        isSephoraExclusive: json["isSephoraExclusive"],
+        listPrice: json["listPrice"],
+        maxPurchaseQuantity: json["maxPurchaseQuantity"],
+        productId: json["productId"],
+        productName: json["productName"],
+        skuImages: json["skuImages"] == null
+            ? null
+            : SkuImages.fromJson(json["skuImages"]),
+        variationType: json["variationType"],
+        variationTypeDisplayName: json["variationTypeDisplayName"],
+        isReturnable: json["isReturnable"],
+        isSameDayEligibleSku: json["isSameDayEligibleSku"],
+        size: json["size"],
+        smallImage: json["smallImage"],
+        variationDesc: json["variationDesc"],
+        variationValue: json["variationValue"],
+        badgeAltText: json["badgeAltText"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "targetUrl": targetUrl,
+        "skuId": skuId,
+        "actionFlags": actionFlags?.toJson(),
+        "biExclusiveLevel": biExclusiveLevel,
+        "brandName": brandName,
+        "freeShippingMessage": freeShippingMessage,
+        "image": image,
+        "isAppExclusive": isAppExclusive,
+        "isBiOnly": isBiOnly,
+        "isFirstAccess": isFirstAccess,
+        "isFree": isFree,
+        "isFreeShippingSku": isFreeShippingSku,
+        "isGoingFast": isGoingFast,
+        "isLimitedEdition": isLimitedEdition,
+        "isLimitedTimeOffer": isLimitedTimeOffer,
+        "isLimitedQuantity": isLimitedQuantity,
+        "isNew": isNew,
+        "isOnlineOnly": isOnlineOnly,
+        "isOnlyFewLeft": isOnlyFewLeft,
+        "isOutOfStock": isOutOfStock,
+        "isExternallySellable": isExternallySellable,
+        "isRopisEligibleSku": isRopisEligibleSku,
+        "isPickUpEligibleSku": isPickUpEligibleSku,
+        "isSephoraExclusive": isSephoraExclusive,
+        "listPrice": listPrice,
+        "maxPurchaseQuantity": maxPurchaseQuantity,
+        "productId": productId,
+        "productName": productName,
+        "skuImages": skuImages?.toJson(),
+        "variationType": variationType,
+        "variationTypeDisplayName": variationTypeDisplayName,
+        "isReturnable": isReturnable,
+        "isSameDayEligibleSku": isSameDayEligibleSku,
+        "size": size,
+        "smallImage": smallImage,
+        "variationDesc": variationDesc,
+        "variationValue": variationValue,
+        "badgeAltText": badgeAltText,
+      };
+}
+
 class CurrentSku {
   final ActionFlags? actionFlags;
   final List<AlternateImage>? alternateImages;
@@ -183,6 +365,7 @@ class CurrentSku {
   final String? displayName;
   final String? freeShippingMessage;
   final List<Highlight>? highlights;
+  final String? ingredientDesc;
   final bool? isAppExclusive;
   final bool? isBiOnly;
   final bool? isBiReward;
@@ -211,6 +394,9 @@ class CurrentSku {
   final bool? isSephoraExclusive;
   final String? listPrice;
   final int? maxPurchaseQuantity;
+  final String? productId;
+  final String? productName;
+  final String? size;
   final String? skuId;
   final SkuImages? skuImages;
   final String? smallImage;
@@ -227,6 +413,7 @@ class CurrentSku {
     this.displayName,
     this.freeShippingMessage,
     this.highlights,
+    this.ingredientDesc,
     this.isAppExclusive,
     this.isBiOnly,
     this.isBiReward,
@@ -255,6 +442,9 @@ class CurrentSku {
     this.isSephoraExclusive,
     this.listPrice,
     this.maxPurchaseQuantity,
+    this.productId,
+    this.productName,
+    this.size,
     this.skuId,
     this.skuImages,
     this.smallImage,
@@ -285,6 +475,7 @@ class CurrentSku {
             ? []
             : List<Highlight>.from(
                 json["highlights"]!.map((x) => Highlight.fromJson(x))),
+        ingredientDesc: json["ingredientDesc"],
         isAppExclusive: json["isAppExclusive"],
         isBiOnly: json["isBiOnly"],
         isBiReward: json["isBiReward"],
@@ -313,6 +504,9 @@ class CurrentSku {
         isSephoraExclusive: json["isSephoraExclusive"],
         listPrice: json["listPrice"],
         maxPurchaseQuantity: json["maxPurchaseQuantity"],
+        productId: json["productId"],
+        productName: json["productName"],
+        size: json["size"],
         skuId: json["skuId"],
         skuImages: json["skuImages"] == null
             ? null
@@ -336,6 +530,7 @@ class CurrentSku {
         "highlights": highlights == null
             ? []
             : List<dynamic>.from(highlights!.map((x) => x.toJson())),
+        "ingredientDesc": ingredientDesc,
         "isAppExclusive": isAppExclusive,
         "isBiOnly": isBiOnly,
         "isBiReward": isBiReward,
@@ -364,6 +559,9 @@ class CurrentSku {
         "isSephoraExclusive": isSephoraExclusive,
         "listPrice": listPrice,
         "maxPurchaseQuantity": maxPurchaseQuantity,
+        "productId": productId,
+        "productName": productName,
+        "size": size,
         "skuId": skuId,
         "skuImages": skuImages?.toJson(),
         "smallImage": smallImage,

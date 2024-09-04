@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sephora_app/models/categories_model.dart';
 import 'package:sephora_app/pages/category_page.dart';
@@ -54,17 +55,20 @@ class _CategoriesListState extends State<CategoriesList>
   Widget build(BuildContext context) {
     List<RootCategory>? categories = categoriesProvider.categoriesList;
 
-    if (categories.isEmpty) return const LoadingPage();
+    if (categoriesProvider.isLoading) return const LoadingPage();
     return ListView.separated(
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (context, index) => const Divider(
               color: Colors.grey,
+              thickness: 1,
             ),
         itemCount: categories.length,
         itemBuilder: (context, i) => ListTile(
-              title: Text(categories[i].displayName ?? ""),
-              trailing: const Icon(
-                Icons.chevron_right,
+              title: Text(
+                categories[i].displayName?.toUpperCase() ?? "",
+                style: GoogleFonts.cormorantGaramond(
+                    textStyle: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.w600)),
               ),
               onTap: () {
                 Navigator.push(

@@ -10,7 +10,7 @@ class DrawersList extends StatelessWidget {
       'Inbox',
       'Lists',
       'Shop',
-      'Stories and Services'
+      'Stories & Services'
     ];
 
     return ListView.separated(

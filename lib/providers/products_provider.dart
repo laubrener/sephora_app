@@ -49,13 +49,13 @@ class ProductsProvider extends ChangeNotifier {
 
   Future<ProductModel> getProductDetail(String prodId, String skuId) async {
     _isLoading = true;
+    print('prodId: $prodId, skuId: $skuId');
     Uri url = Uri.parse(
         '$path/us/products/v2/detail?productId=$prodId&preferedSku=$skuId');
     final resp = await http.get(url, headers: {
       'Content-Type': 'application/json;charset=UTF-8',
       'x-rapidapi-key': apiKey
     });
-
     ProductModel respProduct =
         ProductModel.fromRawJson(utf8.decode(resp.bodyBytes));
     product = respProduct;

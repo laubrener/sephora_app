@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sephora_app/pages/home_page.dart';
 
-import '../models/products_model.dart';
+import '../models/product_model.dart';
 
 class SuggestionList extends StatelessWidget {
-  final List<Product> list;
+  final List<AncillarySkus> list;
   const SuggestionList({super.key, required this.list});
 
   @override
@@ -17,9 +17,15 @@ class SuggestionList extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         itemCount: list.length,
         itemBuilder: (context, index) => Container(
-            padding: const EdgeInsets.only(left: 15, bottom: 15, top: 15),
+            padding: const EdgeInsets.only(
+                left: 7.5, right: 7.5, bottom: 15, top: 15),
             width: 200,
-            child: CardWidget(product: list[index])),
+            child: CardWidget(
+              image: 'https://www.sephora.com${list[index].image}',
+              brand: list[index].brandName ?? '',
+              name: list[index].productName ?? '',
+              price: list[index].listPrice ?? '',
+            )),
       ),
     );
   }

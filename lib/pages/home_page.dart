@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sephora_app/models/product_model.dart';
 import 'package:sephora_app/pages/details_page.dart';
 import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/products_provider.dart';
@@ -85,7 +86,13 @@ class _ProductsListState extends State<ProductsList>
                                 product: products[index],
                               )));
                 },
-                child: CardWidget(product: products[index]),
+                child: CardWidget(
+                  image: products[index].heroImage ?? "",
+                  brand: products[index].brandName ?? '',
+                  name: products[index].displayName ?? '',
+                  price: products[index].currentSku?.listPrice ?? '',
+                  rating: products[index].rating,
+                ),
               );
             },
           );
@@ -95,10 +102,18 @@ class _ProductsListState extends State<ProductsList>
 class CardWidget extends StatelessWidget {
   const CardWidget({
     super.key,
-    required this.product,
+    required this.image,
+    required this.brand,
+    required this.name,
+    required this.price,
+    this.rating,
   });
 
-  final Product product;
+  final String image;
+  final String brand;
+  final String name;
+  final String price;
+  final String? rating;
 
   @override
   Widget build(BuildContext context) {
@@ -125,32 +140,34 @@ class CardWidget extends StatelessWidget {
             child: FadeInImage(
               placeholder: const AssetImage('assets/images/no-image.jpg'),
               placeholderFit: BoxFit.cover,
-              image: NetworkImage(product.heroImage ?? ''),
+              image: NetworkImage(image),
               fit: BoxFit.contain,
             ),
           ),
           const SizedBox(height: 15),
           Text(
-            (product.brandName ?? 'Drybar').toUpperCase(),
+            (brand).toUpperCase(),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
-            product.displayName ?? 'Blonde Ale Brightening Shampoo',
+            name,
             overflow: TextOverflow.clip,
             maxLines: 2,
           ),
           Text(
-            product.currentSku?.listPrice ?? '\$27.00',
+            price,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 15),
-          RatingWidget(
-            rating: double.parse(product.rating ?? '0'),
-            size: 16,
-          )
+          rating == null
+              ? Container()
+              : RatingWidget(
+                  rating: double.parse(rating!),
+                  size: 16,
+                )
         ],
       ),
     );
@@ -162,16 +179,18 @@ class RatingWidget extends StatelessWidget {
     super.key,
     required this.rating,
     this.size = 22,
+    this.width = double.infinity,
   });
 
   final double rating;
   final double? size;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.bottomLeft,
-      width: double.infinity,
+      width: width,
       height: 20,
       child: RatingBar.builder(
         direction: Axis.horizontal,

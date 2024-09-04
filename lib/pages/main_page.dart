@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sephora_app/pages/home_page.dart';
 import 'package:sephora_app/pages/shop_page.dart';
+import 'package:sephora_app/routes/routes.dart';
 import 'package:sephora_app/widgets/drawers_list.dart';
 
 class MainPage extends StatefulWidget {
@@ -37,40 +38,68 @@ class _MainPageState extends State<MainPage>
       ),
       drawer: const Menu(),
       drawerScrimColor: Colors.white.withOpacity(0.5),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MaterialButton(
-              color: Colors.greenAccent,
-              child: const Text(
-                'Categories',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const ShopPage())),
-            ),
-            MaterialButton(
-              color: Colors.lightBlue,
-              child: const Text(
-                'Shop',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => const HomePage(
-                            name: 'HAIR DRYERS',
-                            catId: 'cat1080037',
-                          ))),
-            )
-          ],
-        ),
-      ),
+      body: const RoutesList(),
     );
+  }
+}
+
+class RoutesList extends StatelessWidget {
+  const RoutesList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, i) => ListTile(
+        title: Text(pageRoutes[i].titulo),
+        trailing: const Icon(
+          Icons.chevron_right,
+          color: Colors.grey,
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => pageRoutes[i].page));
+        },
+      ),
+      separatorBuilder: (context, index) => const Divider(
+        color: Colors.grey,
+      ),
+      itemCount: pageRoutes.length,
+    );
+    // return Column(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   children: [
+    //     MaterialButton(
+    //       color: Colors.greenAccent,
+    //       child: const Text(
+    //         'Categories',
+    //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //       ),
+    //       onPressed: () => Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //               builder: (BuildContext context) => const ShopPage())),
+    //     ),
+    //     MaterialButton(
+    //       color: Colors.lightBlue,
+    //       child: const Text(
+    //         'Shop',
+    //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    //       ),
+    //       onPressed: () => Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //               builder: (BuildContext context) => const HomePage(
+    //                     name: 'HAIR DRYERS',
+    //                     catId: 'cat1080037',
+    //                   ))),
+    //     )
+    //   ],
+    // );
   }
 }
 
@@ -127,29 +156,32 @@ class CajaSaludo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
-          color: Colors.grey, borderRadius: BorderRadius.circular(5)),
-      child:
-          const Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          'Hola, Belleza!',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Row(
-          children: [
-            Btn(
-              text: 'INICIAR SESIÓN',
-              route: 'login',
-            ),
-            SizedBox(width: 10),
-            Btn(
-              text: 'CREAR CUENTA',
-              route: 'register',
-            ),
-          ],
-        ),
-      ]),
+          color: Colors.grey[600], borderRadius: BorderRadius.circular(5)),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Hi, Beautiful!',
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          Row(
+            children: [
+              Btn(
+                text: 'SIGN IN',
+                route: 'login',
+              ),
+              SizedBox(width: 10),
+              Btn(
+                text: 'CREATE ACCOUNT',
+                route: 'register',
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
