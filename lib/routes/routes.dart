@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sephora_app/models/products_model.dart';
 import 'package:sephora_app/pages/brandsList_page.dart';
 import 'package:sephora_app/pages/category_page.dart';
+import 'package:sephora_app/pages/details_page.dart';
 import 'package:sephora_app/pages/home_page.dart';
 import 'package:sephora_app/pages/loading_page.dart';
 import 'package:sephora_app/pages/login_page.dart';
@@ -25,6 +27,14 @@ final pageRoutes = [
         name: 'MINI SIZE',
       )),
   Route(titulo: 'Brands', page: const BrandsListPage()),
+  Route(
+      titulo: 'Detail',
+      page: DetailsPage(
+        product: Product(
+          productId: 'P442513',
+          currentSku: CurrentSkuList(skuId: '2176071'),
+        ),
+      )),
 ];
 
 class Route {

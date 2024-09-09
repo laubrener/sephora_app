@@ -45,7 +45,7 @@ class _CategoryPageState extends State<CategoryPage>
 
     return Scaffold(
         appBar: CustomAppBar(title: (widget.name?.toUpperCase()) ?? ''),
-        drawer: const Menu(),
+        // drawer: const Menu(),
         drawerScrimColor: Colors.white.withOpacity(0.5),
         body: categoriesProvider.isLoading
             ? const LoadingPage()

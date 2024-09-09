@@ -14,6 +14,7 @@ class ProductModel {
   final ProductDetails? productDetails;
   final List<ProductVideo>? productVideos;
   final String? quickLookDescription;
+  final List<CurrentSku>? regularChildSkus;
   final List<ReviewFilter>? reviewFilters;
   final List<ReviewImage>? reviewImages;
   final String? skuSelectorType;
@@ -38,6 +39,7 @@ class ProductModel {
     this.productDetails,
     this.productVideos,
     this.quickLookDescription,
+    this.regularChildSkus,
     this.reviewFilters,
     this.reviewImages,
     this.skuSelectorType,
@@ -86,6 +88,10 @@ class ProductModel {
             : List<ProductVideo>.from(
                 json["productVideos"]!.map((x) => ProductVideo.fromJson(x))),
         quickLookDescription: json["quickLookDescription"],
+        regularChildSkus: json["regularChildSkus"] == null
+            ? []
+            : List<CurrentSku>.from(
+                json["regularChildSkus"]!.map((x) => CurrentSku.fromJson(x))),
         reviewFilters: json["reviewFilters"] == null
             ? []
             : List<ReviewFilter>.from(
@@ -125,6 +131,9 @@ class ProductModel {
             ? []
             : List<dynamic>.from(productVideos!.map((x) => x.toJson())),
         "quickLookDescription": quickLookDescription,
+        "regularChildSkus": regularChildSkus == null
+            ? []
+            : List<dynamic>.from(regularChildSkus!.map((x) => x.toJson())),
         "reviewFilters": reviewFilters == null
             ? []
             : List<dynamic>.from(reviewFilters!.map((x) => x.toJson())),

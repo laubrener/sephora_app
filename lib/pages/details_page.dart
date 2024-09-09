@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:html/parser.dart' as html_parser;
 import 'package:sephora_app/models/product_model.dart';
 import 'package:sephora_app/models/products_model.dart';
 import 'package:sephora_app/pages/home_page.dart';
@@ -48,6 +47,7 @@ class _DetailsPageState extends State<DetailsPage>
   @override
   Widget build(BuildContext context) {
     final product = productsProvider.product.productDetails;
+    final sizesList = productsProvider.product.regularChildSkus;
     return Scaffold(
       appBar:
           CustomAppBar(title: product?.brand?.displayName?.toUpperCase() ?? ''),
@@ -70,29 +70,13 @@ class _DetailsPageState extends State<DetailsPage>
                           overflow: TextOverflow.clip,
                           maxLines: 2,
                           style: const TextStyle(fontSize: 18),
+                          textAlign: TextAlign.center,
                         ),
                         ProductImages(
                             product: productsProvider.product,
                             controller: pageController),
                         const SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.file_upload_outlined),
-                            ),
-                            Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.favorite_outline),
-                                ),
-                                Text('${product?.lovesCount ?? 0}')
-                              ],
-                            ),
-                          ],
-                        ),
+                        IconsWidget(product: product),
                         Text(
                           productsProvider.product.currentSku?.listPrice ??
                               '\$00.00',
@@ -100,15 +84,31 @@ class _DetailsPageState extends State<DetailsPage>
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         const SizedBox(height: 15),
+                        productsProvider.product.currentSku?.size != null
+                            ? Text(
+                                "SIZE: ${productsProvider.product.currentSku?.size}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              )
+                            : Container(),
+                        productsProvider.product.currentSku?.size != null
+                            ? Text(
+                                "SIZE: ${productsProvider.product.currentSku?.size} - Item# ${productsProvider.product.currentSku?.skuId}",
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.grey),
+                              )
+                            : Container(),
+                        const SizedBox(height: 10),
+                        sizesList?.length != null && sizesList?.length != 0
+                            ? SizesListBtns(
+                                sizesList: sizesList,
+                                product: productsProvider.product,
+                              )
+                            : Container(),
                         Text(
-                          "SIZE: ${productsProvider.product.currentSku?.size}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        Text(
-                          "SIZE: ${productsProvider.product.currentSku?.size} - Item# ${productsProvider.product.currentSku?.skuId}",
-                          style:
-                              const TextStyle(fontSize: 14, color: Colors.grey),
+                          productsProvider.product.quickLookDescription ?? '',
+                          style: const TextStyle(fontSize: 16),
+                          // textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 10),
                         Container(
@@ -121,7 +121,7 @@ class _DetailsPageState extends State<DetailsPage>
                           child: Text(
                             productsProvider.product.useItWithTitle
                                     ?.toUpperCase() ??
-                                'USE IT WITH',
+                                '',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           ),
@@ -155,6 +155,97 @@ class _DetailsPageState extends State<DetailsPage>
                 const AddToBasketBtn(),
               ],
             ),
+    );
+  }
+}
+
+class SizesListBtns extends StatefulWidget {
+  const SizesListBtns({
+    super.key,
+    required this.sizesList,
+    required this.product,
+  });
+
+  final List<CurrentSku>? sizesList;
+  final ProductModel product;
+
+  @override
+  State<SizesListBtns> createState() => _SizesListBtnsState();
+}
+
+class _SizesListBtnsState extends State<SizesListBtns> {
+  @override
+  Widget build(BuildContext context) {
+    texto(int index) {
+      final pipi = (widget.sizesList?[index].displayName)!.split(' ');
+      pipi.removeAt(0);
+
+      return pipi.join(' ');
+    }
+
+    return Container(
+      width: MediaQuery.of(context).size.width * .65,
+      height: (widget.sizesList?.length ?? 0) > 2 ? 110 : 55,
+      // color: Colors.grey[200],
+      alignment: Alignment.center,
+      child: GridView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 180,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              mainAxisExtent: 40),
+          // scrollDirection: Axis.horizontal,
+          itemCount: widget.sizesList?.length ?? 0,
+          itemBuilder: (context, index) => MaterialButton(
+                padding: const EdgeInsets.all(10),
+                onPressed: () async {
+                  final productsProvider = context.read<ProductsProvider>();
+
+                  await productsProvider.getProductDetail(
+                      widget.product.productDetails!.productId!,
+                      widget.product.regularChildSkus![index].skuId!);
+
+                  setState(() {});
+                },
+                textColor: Colors.grey,
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 2, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(texto(index).toUpperCase()),
+              )),
+    );
+  }
+}
+
+class IconsWidget extends StatelessWidget {
+  const IconsWidget({
+    super.key,
+    required this.product,
+  });
+
+  final ProductDetails? product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.file_upload_outlined),
+        ),
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.favorite_outline),
+            ),
+            Text('${product?.lovesCount ?? 0}')
+          ],
+        ),
+      ],
     );
   }
 }

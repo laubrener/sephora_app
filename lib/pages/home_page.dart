@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sephora_app/models/product_model.dart';
 import 'package:sephora_app/pages/details_page.dart';
 import 'package:sephora_app/pages/main_page.dart';
 import 'package:sephora_app/providers/products_provider.dart';

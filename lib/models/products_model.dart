@@ -335,7 +335,7 @@ class ParentCategory {
 
 class Product {
   final String? brandName;
-  final CurrentSku? currentSku;
+  final CurrentSkuList? currentSku;
   final String? displayName;
   final String? heroImage;
   final String? altImage;
@@ -376,7 +376,7 @@ class Product {
         brandName: json["brandName"],
         currentSku: json["currentSku"] == null
             ? null
-            : CurrentSku.fromJson(json["currentSku"]),
+            : CurrentSkuList.fromJson(json["currentSku"]),
         displayName: json["displayName"],
         heroImage: json["heroImage"],
         altImage: json["altImage"],
@@ -411,7 +411,7 @@ class Product {
       };
 }
 
-class CurrentSku {
+class CurrentSkuList {
   final String? imageAltText;
   final bool? isAppExclusive;
   final bool? isBi;
@@ -427,7 +427,7 @@ class CurrentSku {
   final String? listPrice;
   final String? skuId;
 
-  CurrentSku({
+  CurrentSkuList({
     this.imageAltText,
     this.isAppExclusive,
     this.isBi,
@@ -444,12 +444,12 @@ class CurrentSku {
     this.skuId,
   });
 
-  factory CurrentSku.fromRawJson(String str) =>
-      CurrentSku.fromJson(json.decode(str));
+  factory CurrentSkuList.fromRawJson(String str) =>
+      CurrentSkuList.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory CurrentSku.fromJson(Map<String, dynamic> json) => CurrentSku(
+  factory CurrentSkuList.fromJson(Map<String, dynamic> json) => CurrentSkuList(
         imageAltText: json["imageAltText"],
         isAppExclusive: json["isAppExclusive"],
         isBi: json["isBI"],
